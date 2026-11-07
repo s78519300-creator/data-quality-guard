@@ -1,0 +1,26 @@
+{
+  "dataset": "web_events",
+  "description": "Clickstream events landed hourly as JSON Lines.",
+  "schema": {
+    "columns": {
+      "event_id": "string",
+      "user_id": "integer",
+      "event_type": "string",
+      "ts": "timestamp",
+      "duration_ms": "integer"
+    }
+  },
+  "quarantine": {"max_critical_rate": 0.5},
+  "checks": [
+    {"type": "row_count", "min": 1, "severity": "critical"},
+    {"type": "unique", "column": "event_id", "severity": "critical"},
+    {"type": "not_null", "column": "user_id", "severity": "warn"},
+    {"type": "in_range", "column": "duration_ms", "min": 0, "severity": "critical"},
+    {
+      "type": "allowed_values",
+      "column": "event_type",
+      "values": ["page_view", "add_to_cart", "checkout", "purchase"],
+      "severity": "warn"
+    }
+  ]
+}

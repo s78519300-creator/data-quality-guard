@@ -1,0 +1,102 @@
+{
+  "dataset": "orders",
+  "description": "Daily order extract from the storefront OLTP database, loaded into the analytics warehouse.",
+  "schema": {
+    "columns": {
+      "order_id": "integer",
+      "customer_id": "integer",
+      "customer_email": "string",
+      "order_ts": "timestamp",
+      "amount": "number",
+      "currency": "string",
+      "status": "string",
+      "quantity": "integer"
+    },
+    "drift_severity": {
+      "added": "warn",
+      "removed": "critical",
+      "type_changed": "warn"
+    }
+  },
+  "quarantine": {
+    "max_critical_rate": 0.25
+  },
+  "checks": [
+    {
+      "name": "row_count_bounds",
+      "type": "row_count",
+      "min": 10,
+      "max": 1000000,
+      "severity": "critical"
+    },
+    {
+      "name": "order_id_present",
+      "type": "not_null",
+      "column": "order_id",
+      "severity": "critical"
+    },
+    {
+      "name": "order_id_unique",
+      "type": "unique",
+      "column": "order_id",
+      "severity": "critical"
+    },
+    {
+      "name": "amount_non_negative",
+      "type": "in_range",
+      "column": "amount",
+      "min": 0,
+      "max": 50000,
+      "severity": "critical"
+    },
+    {
+      "name": "email_present",
+      "type": "not_null",
+      "column": "customer_email",
+      "severity": "warn"
+    },
+    {
+      "name": "email_format",
+      "type": "regex",
+      "column": "customer_email",
+      "pattern": "[^@\\s]+@[^@\\s]+\\.[A-Za-z]{2,}",
+      "severity": "critical"
+    },
+    {
+      "name": "quantity_is_integer",
+      "type": "type",
+      "column": "quantity",
+      "expected": "integer",
+      "severity": "critical"
+    },
+    {
+      "name": "currency_iso",
+      "type": "allowed_values",
+      "column": "currency",
+      "values": ["USD", "EUR", "GBP"],
+      "severity": "warn"
+    },
+    {
+      "name": "status_known",
+      "type": "allowed_values",
+      "column": "status",
+      "values": ["pending", "shipped", "delivered", "cancelled", "refunded"],
+      "severity": "warn"
+    },
+    {
+      "name": "customer_exists",
+      "type": "referential",
+      "column": "customer_id",
+      "dataset": "customers.csv",
+      "ref_column": "customer_id",
+      "severity": "warn"
+    },
+    {
+      "name": "orders_fresh",
+      "type": "freshness",
+      "column": "order_ts",
+      "max_age_hours": 48,
+      "severity": "warn"
+    }
+  ]
+}

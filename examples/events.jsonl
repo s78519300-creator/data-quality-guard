@@ -1,0 +1,8 @@
+{"event_id": "e-001", "user_id": 1001, "event_type": "page_view", "ts": "2026-11-07T10:00:00Z", "duration_ms": 1200}
+{"event_id": "e-002", "user_id": 1002, "event_type": "add_to_cart", "ts": "2026-11-07T10:01:30Z", "duration_ms": 300}
+{"event_id": "e-003", "user_id": null, "event_type": "page_view", "ts": "2026-11-07T10:02:10Z", "duration_ms": 950}
+{"event_id": "e-004", "user_id": 1004, "event_type": "checkout", "ts": "2026-11-07T10:05:45Z", "duration_ms": -40}
+{"event_id": "e-004", "user_id": 1004, "event_type": "checkout", "ts": "2026-11-07T10:05:45Z", "duration_ms": 410}
+{"event_id": "e-006", "user_id": 1006, "event_type": "purchase", "ts": "2026-11-07T10:07:00Z", "duration_ms": 780}
+{"event_id": "e-007", "user_id": 1007, "event_type": "page_veiw", "ts": "2026-11-07T10:09:12Z", "duration_ms": 640}
+{"event_id": "e-008", "user_id": 1008, "event_type": "page_view", "ts": "2026-11-07T10:11:03Z", "duration_ms": 1500}
